@@ -4,11 +4,13 @@ import styled from 'styled-components'
 
 import TodoItem from './TodoItem'
 
-const TodoList = ({ items, toggleComplete }) => (
+const TodoList = ({ todo, items, toggleComplete }) => (
   <Wrapper>
+  {console.log('items', items)}
     {items.map(item => {
       const onComplete = e => {
-        toggleComplete(item.id)
+        console.log('Current todo key', todo)
+        toggleComplete(todo, item.id)
       }
 
       return <TodoItem key={item.id} {...item} onComplete={onComplete} />

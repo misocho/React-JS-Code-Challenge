@@ -4,40 +4,74 @@ const defaultState = {
   list: [
     {
       id: 1,
-      completed: false,
-      text: 'Read README'
+      title: 'First todo',
+      display: false,
+      todoItems: [
+        {
+          id: 1,
+          completed: false,
+          text: 'Read README'
+        },
+        {
+          id: 2,
+          completed: false,
+          text: 'Add one todo'
+        },
+        {
+          id: 3,
+          completed: false,
+          text: 'Add filters'
+        },
+        {
+          id: 4,
+          completed: false,
+          text: 'Add multiple lists'
+        },
+        {
+          id: 5,
+          completed: false,
+          text: 'Optional: add tests'
+        }
+      ]
     },
     {
       id: 2,
-      completed: false,
-      text: 'Add one todo'
-    },
-    {
-      id: 3,
-      completed: false,
-      text: 'Add filters'
-    },
-    {
-      id: 4,
-      completed: false,
-      text: 'Add multiple lists'
-    },
-    {
-      id: 5,
-      completed: false,
-      text: 'Optional: add tests'
+      title: 'Second todo',
+      display: false,
+      todoItems: [
+        {
+          id: 6,
+          completed: false,
+          text: 'Create github repo'
+        },
+        {
+          id: 7,
+          completed: false,
+          text: 'Go though source code'
+        },
+        {
+          id: 8,
+          completed: false,
+          text: 'Add list todos'
+        },
+        {
+          id: 9,
+          completed: false,
+          text: 'Add filter todos'
+        }
+      ]
     }
   ]
 }
 
 class TodosContainer extends Container {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = this.readStorage()
   }
 
-  readStorage () {
+  readStorage() {
     if (window && window.localStorage) {
       const state = window.localStorage.getItem('appState')
       if (state) {
@@ -48,34 +82,34 @@ class TodosContainer extends Container {
     return defaultState
   }
 
-  syncStorage () {
+  syncStorage() {
     if (window && window.localStorage) {
       const state = JSON.stringify(this.state)
       window.localStorage.setItem('appState', state)
     }
   }
 
-  getList () {
-    return this.state.list
+  displayTodos = async id => {
+    const todo = this.state.list.find(i => i.id === id);
+    const display = !todo.dispay;
+    console.log(todo.title, display);
   }
 
-  toggleComplete = async id => {
-    const item = this.state.list.find(i => i.id === id)
+  listTodos() {
+    return this.state.list;
+  }
+
+
+  toggleComplete = async (todo, id) => {
+    const currentTodo = this.state.list.find(i => i.id === todo);
+    console.log('Current todo', currentTodo);
+    const item = currentTodo.todoItems.find(i => i.id === id)
     const completed = !item.completed
+    console.log('The item', item);
 
     // We're using await on setState here because this comes from unstated package, not React
     // See: https://github.com/jamiebuilds/unstated#introducing-unstated
-    await this.setState(state => {
-      const list = state.list.map(item => {
-        if (item.id !== id) return item
-        return {
-          ...item,
-          completed
-        }
-      })
-      return { list }
-    })
-
+    
     this.syncStorage()
   }
 

@@ -12,7 +12,7 @@ const TodoList = ({ todo, items, toggleComplete }) => (
         console.log('Current todo key', todo)
         toggleComplete(todo, item.id)
       }
-
+      console.log('Item ....', {...item})
       return <TodoItem key={item.id} {...item} onComplete={onComplete} />
     })}
   </Wrapper>

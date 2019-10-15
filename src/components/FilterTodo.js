@@ -2,13 +2,13 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-const FilterTodo = () =>{
+const FilterTodo = ({ filterCompleted, filterActive }) => {
   return (
     <Filter>
       <FilterTitle>Filter by</FilterTitle>
       <FilterOptions>
-        <Completed>[ ] <Text> Completed </Text></Completed>
-        <Active>[ ] <Text> Active </Text></Active>
+        <Completed>[{ filterCompleted ? 'x' : ' ' }] <Text> Completed </Text></Completed>
+        <Active>[{ filterActive ? 'x' : ' '}] <Text> Active </Text></Active>
       </FilterOptions>
     </Filter>
   )

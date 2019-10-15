@@ -6,6 +6,8 @@ const defaultState = {
       id: 1,
       title: 'First todo',
       display: false,
+      filterCompleted: false,
+      filterActive: false,
       todoItems: [
         {
           id: 1,
@@ -92,7 +94,19 @@ class TodosContainer extends Container {
   displayTodos = async id => {
     const todo = this.state.list.find(i => i.id === id);
     const display = !todo.dispay;
-    console.log(todo.title, display);
+    await this.setState(state => {
+      const list = state.list.map(todo => {
+        if (todo.id !== id) return todo;
+        return {
+          ...todo,
+          display
+        }
+      });
+      
+      return { list }
+    });
+    console.log('State list', this.state.list)
+    this.syncStorage();
   }
 
   listTodos() {
@@ -109,7 +123,20 @@ class TodosContainer extends Container {
 
     // We're using await on setState here because this comes from unstated package, not React
     // See: https://github.com/jamiebuilds/unstated#introducing-unstated
-    
+    await this.setState(state=>{
+      const list = state.list.map(listItem=>{
+        const updatedTodoList = listItem.todoItems.map(item=>(item.id===id?{...item,completed}:{...item}));
+        return {
+          ...listItem,
+          todoItems:updatedTodoList,
+        }
+      })
+      return{
+        ...state,
+        list,
+      }
+    });
+  
     this.syncStorage()
   }
 

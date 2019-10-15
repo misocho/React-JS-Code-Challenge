@@ -6,11 +6,11 @@ import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import FilterTodo from './FilterTodo';
 
-const Todo = ({ items, filterCompleted, filterActive, todoMethods, todo }) => {
+const Todo = ({ items, filterCompleted, filterActive, filterAll, todoMethods, todo }) => {
   return (
     <Wrapper >
       <AddTodo onAddTodo={todoMethods.createTodo} todo={todo} />
-      <FilterTodo filterActive={todoMethods.filterActive} isFilterActive={filterActive} isFilterCompleted={filterCompleted} filterCompleted={todoMethods.filterCompleted} todo={todo} />
+      <FilterTodo filterActive={todoMethods.filterActive} isFilterActive={filterActive} isFilterAll={filterAll} isFilterCompleted={filterCompleted} filterAll={todoMethods.filterAll} filterCompleted={todoMethods.filterCompleted} todo={todo} />
       <TodoList items={items} todo={todo} toggleComplete={todoMethods.toggleComplete} />
     </Wrapper>
   );

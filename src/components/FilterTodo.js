@@ -14,11 +14,12 @@ const FilterTodo = ({ filterCompleted, isFilterActive, isFilterAll, isFilterComp
   const onFilterAll = e => {
     filterAll(todo);
   }
+
   return (
     <Filter>
       <FilterTitle>Filter by</FilterTitle>
       <FilterOptions>
-        <FilterOption onclick={onFilterAll}>[{isFilterAll ? 'x' : ' '}] <Text> All </Text></FilterOption>
+        <FilterOption onClick={onFilterAll}>[{isFilterAll ? 'x' : ' '}] <Text> Alls </Text></FilterOption>
         <FilterOption onClick={onFilterCompleted}>[{ isFilterCompleted ? 'x' : ' ' }] <Text> Completed </Text></FilterOption>
         <FilterOption onClick={onFilterActive}>[{isFilterActive ? 'x' : ' '}] <Text> Active </Text></FilterOption>
       </FilterOptions>

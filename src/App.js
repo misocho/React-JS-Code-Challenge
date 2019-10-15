@@ -20,8 +20,6 @@ function App() {
               <TodosWrapper >
                 <AddTodoList onAddTodoList={todos.createTodoList} />
                 <ListTodos items={list} displayTodos={todos.displayTodos} getList={todos.getList} todoMethods={todos} />
-                {/* <AddTodo onAddTodo={todos.createTodo} />
-                <TodoList items={list} toggleComplete={todos.toggleComplete} /> */}
               </TodosWrapper>
             )
           }}
@@ -42,7 +40,6 @@ const Wrapper = styled.div`
   color: white;
 `
 const TodosWrapper = styled.div`
-  max-width: 500px;
   display: flex;
   flex-direction: column;
   margin: 50px auto;

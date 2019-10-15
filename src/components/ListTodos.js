@@ -13,9 +13,9 @@ const ListTodos = ({ items, displayTodos, todoMethods }) => (
       
       return (
         <TodosWrapper>
-          <TodoHeader>
+          <TodoHeader onClick={onDisplay}>
             <Title>{item.title}</Title>
-            <CloseButton onClick={onDisplay}>+</CloseButton>
+            <CloseButton  display={item.display.toString()}>+</CloseButton>
           </TodoHeader>
           {item.display ? <Todo {...item} key={item.id} title={item.title} todo={item.id} items={item.todoItems} todoMethods={todoMethods} /> : ''}
         </TodosWrapper>)
@@ -42,14 +42,14 @@ const TodosWrapper = styled.div`
 const TodoHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 `
 
 const CloseButton = styled.p`
   font-weight: 700;
   font-size: 24px;
-  transform: rotate(40deg);
+  transform: ${props => props.display === "true" ? 'rotate(40deg)' : 'rotate(0deg)'};
   margin-left: auto;
-  cursor: pointer;
 `
 
 export default ListTodos;

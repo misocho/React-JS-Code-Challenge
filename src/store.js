@@ -7,6 +7,7 @@ const defaultState = {
       title: 'First todo',
       display: false,
       filterCompleted: false,
+      filterAll: true,
       filterActive: false,
       todoItems: [
         {
@@ -176,12 +177,36 @@ class TodosContainer extends Container {
     this.syncStorage()
   }
 
+  filterAll = async id => {
+    const defaultState = JSON.parse(localStorage.getItem('appState'));
+    const defaultTodo = defaultState.list.find(i => i.id === id);
+    const currentTodo = this.state.list.find(i => i.id === id);
+    const filterAll = !currentTodo.filterAll;
+
+    if (currentTodo.filterCompleted) { currentTodo.filterCompleted = false }
+    if (currentTodo.filterActive) { currentTodo.filterActive = false }
+    await this.setState(state => {
+      const list = state.list.map(todo => {
+        if (todo.id !== id) return todo;
+        return {
+          ...todo,
+          filterAll
+        }
+      });
+      return { list }
+    });
+
+    const todos = filterAll ? defaultTodo.todoItems : defaultTodo.todoItems;
+    this.updateStateByFilter(id, { todos });
+  }
+
   filterActive = async id => {
     const defaultState = JSON.parse(localStorage.getItem('appState'));
     const defaultTodo = defaultState.list.find(i => i.id === id);
     const currentTodo = this.state.list.find(i => i.id === id);
     const filterActive = !currentTodo.filterActive;
     if (currentTodo.filterCompleted) { currentTodo.filterCompleted = false }
+    if (currentTodo.filterAll) { currentTodo.filterAll = false }
     await this.setState(state => {
       const list = state.list.map(todo => {
         if (todo.id !== id) return todo;
@@ -203,6 +228,7 @@ class TodosContainer extends Container {
     const currentTodo = this.state.list.find(i => i.id === id);
     const filterCompleted = !currentTodo.filterCompleted;
     if (currentTodo.filterActive) { currentTodo.filterActive = false }
+    if (currentTodo.filterAll) { currentTodo.filterAll = false }
     await this.setState(state => {
       const list = state.list.map(todo => {
         if (todo.id !== id) return todo;

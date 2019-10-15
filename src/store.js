@@ -164,7 +164,7 @@ class TodosContainer extends Container {
       const todoList = {
         id: state.list.length + 1,
         title: text,
-        dispaly: false,
+        display: false,
         filterCompleted: false,
         filterActive: false,
         todoItems: []

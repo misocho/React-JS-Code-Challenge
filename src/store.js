@@ -134,7 +134,6 @@ class TodosContainer extends Container {
         list,
       }
     });
-
     this.syncStorage()
   }
 

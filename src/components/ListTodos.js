@@ -12,12 +12,12 @@ const ListTodos = ({ items, displayTodos, todoMethods }) => (
       }
       
       return (
-        <TodosWrapper>
+        <TodosWrapper key={item.id}>
           <TodoHeader onClick={onDisplay}>
             <Title>{item.title}</Title>
             <CloseButton  display={item.display.toString()}>+</CloseButton>
           </TodoHeader>
-          {item.display ? <Todo {...item} key={item.id} title={item.title} todo={item.id} items={item.todoItems} todoMethods={todoMethods} /> : ''}
+          {item.display ? <Todo {...item} title={item.title} todo={item.id} items={item.todoItems} todoMethods={todoMethods} /> : ''}
         </TodosWrapper>)
     })}
   </Wrapper>

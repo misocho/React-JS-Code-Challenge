@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-const FilterTodo = ({ filterCompleted, isFilterActive, isFilterCompleted, filterActive, todo }) => {
+const FilterTodo = ({ filterCompleted, isFilterActive, isFilterAll, isFilterCompleted, filterActive, filterAll, todo }) => {
   const onFilterActive = e => {
     filterActive(todo);
   }
@@ -10,12 +10,17 @@ const FilterTodo = ({ filterCompleted, isFilterActive, isFilterCompleted, filter
   const onFilterCompleted = e => {
     filterCompleted(todo);
   }
+
+  const onFilterAll = e => {
+    filterAll(todo);
+  }
   return (
     <Filter>
       <FilterTitle>Filter by</FilterTitle>
       <FilterOptions>
-        <Completed onClick={onFilterCompleted}>[{ isFilterCompleted ? 'x' : ' ' }] <Text> Completed </Text></Completed>
-        <Active onClick={onFilterActive}>[{ isFilterActive ? 'x' : ' '}] <Text> Active </Text></Active>
+        <FilterOption onclick={onFilterAll}>[{isFilterAll ? 'x' : ' '}] <Text> All </Text></FilterOption>
+        <FilterOption onClick={onFilterCompleted}>[{ isFilterCompleted ? 'x' : ' ' }] <Text> Completed </Text></FilterOption>
+        <FilterOption onClick={onFilterActive}>[{isFilterActive ? 'x' : ' '}] <Text> Active </Text></FilterOption>
       </FilterOptions>
     </Filter>
   )
@@ -32,10 +37,8 @@ const FilterOptions = styled.div`
   margin: auto 20px;
 `
 
-const Completed = styled.div`
+const FilterOption = styled.div`
   margin: auto 30px;
-`
-const Active = styled.div`
 `
 
 const Text = styled.p`

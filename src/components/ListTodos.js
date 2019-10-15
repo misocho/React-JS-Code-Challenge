@@ -8,7 +8,6 @@ const ListTodos = ({ items, displayTodos, todoMethods }) => (
   <Wrapper >
     {items.map(item => {
       const onDisplay = e => {
-        console.log('Clicked');
         displayTodos(item.id);
       }
       
@@ -18,8 +17,7 @@ const ListTodos = ({ items, displayTodos, todoMethods }) => (
             <Title>{item.title}</Title>
             <CloseButton onClick={onDisplay}>+</CloseButton>
           </TodoHeader>
-          {console.log('The display', item.display)}
-          {item.display ? <Todo key={item.id} title={item.title} todo={item.id} items={item.todoItems} todoMethods={todoMethods} /> : ''}
+          {item.display ? <Todo {...item} key={item.id} title={item.title} todo={item.id} items={item.todoItems} todoMethods={todoMethods} /> : ''}
         </TodosWrapper>)
     })}
   </Wrapper>
@@ -28,6 +26,7 @@ const ListTodos = ({ items, displayTodos, todoMethods }) => (
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%
 `
 const Title = styled.p`
   font-weight: 700;
@@ -35,6 +34,7 @@ const Title = styled.p`
   margin-right: auto;
 `
 const TodosWrapper = styled.div`
+  margin: 30px auto;
   width: 500px;
   display: flex;
   flex-direction: column;

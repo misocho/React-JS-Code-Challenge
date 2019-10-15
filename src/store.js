@@ -93,7 +93,7 @@ class TodosContainer extends Container {
 
   displayTodos = async id => {
     const todo = this.state.list.find(i => i.id === id);
-    const display = !todo.dispay;
+    const display = !todo.display;
     await this.setState(state => {
       const list = state.list.map(todo => {
         if (todo.id !== id) return todo;
@@ -102,10 +102,9 @@ class TodosContainer extends Container {
           display
         }
       });
-      
+
       return { list }
     });
-    console.log('State list', this.state.list)
     this.syncStorage();
   }
 
@@ -116,27 +115,25 @@ class TodosContainer extends Container {
 
   toggleComplete = async (todo, id) => {
     const currentTodo = this.state.list.find(i => i.id === todo);
-    console.log('Current todo', currentTodo);
     const item = currentTodo.todoItems.find(i => i.id === id)
     const completed = !item.completed
-    console.log('The item', item);
 
     // We're using await on setState here because this comes from unstated package, not React
     // See: https://github.com/jamiebuilds/unstated#introducing-unstated
-    await this.setState(state=>{
-      const list = state.list.map(listItem=>{
-        const updatedTodoList = listItem.todoItems.map(item=>(item.id===id?{...item,completed}:{...item}));
+    await this.setState(state => {
+      const list = state.list.map(listItem => {
+        const updatedTodoList = listItem.todoItems.map(item => (item.id === id ? { ...item, completed } : { ...item }));
         return {
           ...listItem,
-          todoItems:updatedTodoList,
+          todoItems: updatedTodoList,
         }
       })
-      return{
+      return {
         ...state,
         list,
       }
     });
-  
+
     this.syncStorage()
   }
 
@@ -153,6 +150,84 @@ class TodosContainer extends Container {
     })
 
     this.syncStorage()
+  }
+
+  createTodoList = async text => {
+    await this.setState(state => {
+      const todoList = {
+        id: state.list.length + 1,
+        title: text,
+        dispaly: false,
+        filterCompleted: false,
+        filterActive: false,
+        todoItems: []
+      }
+
+      const list = state.list.concat(todoList);
+      return { list }
+    });
+
+    this.syncStorage()
+  }
+
+  filterActive = async id => {
+    const defaultState = JSON.parse(localStorage.getItem('appState'));
+    const defaultTodo = defaultState.list.find(i => i.id === id);
+    const currentTodo = this.state.list.find(i => i.id === id);
+    const filterActive = !currentTodo.filterActive;
+    if (currentTodo.filterCompleted) { currentTodo.filterCompleted = false }
+    await this.setState(state => {
+      const list = state.list.map(todo => {
+        if (todo.id !== id) return todo;
+        return {
+          ...todo,
+          filterActive
+        }
+      });
+      return { list }
+    });
+
+    const todos = filterActive ? defaultTodo.todoItems.filter(i => i.completed === false) : defaultTodo.todoItems;
+    this.updateStateByFilter(id, { todos });
+  }
+
+  filterCompleted = async id => {
+    const defaultState = JSON.parse(localStorage.getItem('appState'));
+    const defaultTodo = defaultState.list.find(i => i.id === id);
+    console.log('Default todo', defaultState);
+    const currentTodo = this.state.list.find(i => i.id === id);
+    const filterCompleted = !currentTodo.filterCompleted;
+    if (currentTodo.filterActive) { currentTodo.filterActive = false}
+      console.log('Checks the filter --> ', currentTodo)
+    await this.setState(state => {
+      const list = state.list.map(todo => {
+        if (todo.id !== id) return todo;
+        return {
+          ...todo,
+          filterCompleted
+        }
+      });
+      return { list }
+    });
+
+    const todos = filterCompleted ? defaultTodo.todoItems.filter(i => i.completed === true) : defaultTodo.todoItems;
+    console.log('All array values', filterCompleted, todos);
+    this.updateStateByFilter(id, { todos });
+  }
+
+  updateStateByFilter = async (id, { todos }) => {
+    console.log('Filtered todos', todos)
+    await this.setState(state => {
+      const list = state.list.map(listItem => {
+        if (listItem.id !== id) return { ...listItem }
+        return {
+          ...listItem,
+          todoItems: todos
+        }
+      });
+      return { list }
+    });
+    console.log('The state', this.state)
   }
 }
 

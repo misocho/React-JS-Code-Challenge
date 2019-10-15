@@ -16,7 +16,6 @@ function App() {
         <Subscribe to={[TodosContainer]}>
           {todos => {
             const list = todos.listTodos()
-            console.log('The list', list);
             return (
               <TodosWrapper >
                 <AddTodoList onAddTodoList={todos.createTodoList} />

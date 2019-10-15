@@ -7,11 +7,10 @@ import AddTodo from './AddTodo';
 import FilterTodo from './FilterTodo';
 
 const Todo = ({ items, filterCompleted, filterActive, todoMethods, todo }) => {
-  console.log('Checks filter states', filterActive, filterCompleted);
   return (
     <Wrapper >
-      <AddTodo onAddTodo={todoMethods.createTodo} />
-      <FilterTodo filterActive={todoMethods.filterActive} isFilterActive={filterActive} isFilterCompleted={filterCompleted} filterCompleted={todoMethods.filterCompleted} todo={todo}/>
+      <AddTodo onAddTodo={todoMethods.createTodo} todo={todo} />
+      <FilterTodo filterActive={todoMethods.filterActive} isFilterActive={filterActive} isFilterCompleted={filterCompleted} filterCompleted={todoMethods.filterCompleted} todo={todo} />
       <TodoList items={items} todo={todo} toggleComplete={todoMethods.toggleComplete} />
     </Wrapper>
   );

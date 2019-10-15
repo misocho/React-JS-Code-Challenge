@@ -137,18 +137,24 @@ class TodosContainer extends Container {
     this.syncStorage()
   }
 
-  createTodo = async text => {
+  createTodo = async (text, todo) => {
     await this.setState(state => {
-      const item = {
-        completed: false,
-        text,
-        id: state.list.length + 1
-      }
-
-      const list = state.list.concat(item)
+      const list = state.list.map(listItem => {
+        const item = {
+          completed: false,
+          text,
+          id: listItem.todoItems.length + 1
+        }
+        if (listItem.id !== todo) return listItem;
+        const todoItems = listItem.todoItems.concat(item)
+        return {
+          ...listItem,
+          todoItems
+        }
+      });
       return { list }
-    })
 
+    })
     this.syncStorage()
   }
 
@@ -194,11 +200,9 @@ class TodosContainer extends Container {
   filterCompleted = async id => {
     const defaultState = JSON.parse(localStorage.getItem('appState'));
     const defaultTodo = defaultState.list.find(i => i.id === id);
-    console.log('Default todo', defaultState);
     const currentTodo = this.state.list.find(i => i.id === id);
     const filterCompleted = !currentTodo.filterCompleted;
-    if (currentTodo.filterActive) { currentTodo.filterActive = false}
-      console.log('Checks the filter --> ', currentTodo)
+    if (currentTodo.filterActive) { currentTodo.filterActive = false }
     await this.setState(state => {
       const list = state.list.map(todo => {
         if (todo.id !== id) return todo;
@@ -211,12 +215,10 @@ class TodosContainer extends Container {
     });
 
     const todos = filterCompleted ? defaultTodo.todoItems.filter(i => i.completed === true) : defaultTodo.todoItems;
-    console.log('All array values', filterCompleted, todos);
     this.updateStateByFilter(id, { todos });
   }
 
   updateStateByFilter = async (id, { todos }) => {
-    console.log('Filtered todos', todos)
     await this.setState(state => {
       const list = state.list.map(listItem => {
         if (listItem.id !== id) return { ...listItem }
@@ -227,7 +229,6 @@ class TodosContainer extends Container {
       });
       return { list }
     });
-    console.log('The state', this.state)
   }
 }
 

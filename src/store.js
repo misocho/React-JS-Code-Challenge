@@ -161,16 +161,18 @@ class TodosContainer extends Container {
   }
 
   createTodoList = async text => {
-    await this.setState(state => {
-      const todoList = {
-        id: state.list.length + 1,
-        title: text,
-        display: false,
-        filterCompleted: false,
-        filterActive: false,
-        todoItems: []
-      }
+    const defaultState = JSON.parse(localStorage.getItem('appState'));
 
+    const todoList = {
+      id: defaultState.list.length + 1,
+      title: text,
+      display: false,
+      filterCompleted: false,
+      filterActive: false,
+      todoItems: []
+    }
+
+    await this.setState(state => {
       const list = state.list.concat(todoList);
       return { list }
     });

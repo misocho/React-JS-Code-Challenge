@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 import TodosContainer from './store'
 
-import TodoList from './components/TodoList'
 import AddTodoList from './components/AddTodoList';
 import ListTodos from './components/ListTodos';
 

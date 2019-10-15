@@ -138,13 +138,15 @@ class TodosContainer extends Container {
   }
 
   createTodo = async (text, todo) => {
+    const defaultState = JSON.parse(localStorage.getItem('appState'));
+    const getTodo = defaultState.list.find(i => i.id === todo)
+    const item = {
+      completed: false,
+      text,
+      id: getTodo.todoItems.length + 1
+    }
     await this.setState(state => {
       const list = state.list.map(listItem => {
-        const item = {
-          completed: false,
-          text,
-          id: listItem.todoItems.length + 1
-        }
         if (listItem.id !== todo) return listItem;
         const todoItems = listItem.todoItems.concat(item)
         return {

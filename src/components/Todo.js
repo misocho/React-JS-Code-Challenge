@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 
-const Todo = ({ items, filterCompleted, filterActive, filterAll, todoMethods, todo, filter }) => {
+const Todo = ({ items, todoMethods, todo, filter }) => {
   const [filterCriteria, setFilterCriteria] = useState("all")
   const [itemsToBeDisplayed, setItems] = useState(items);
   useEffect(() => {

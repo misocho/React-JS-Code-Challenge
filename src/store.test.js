@@ -72,14 +72,39 @@ it('readStorage', () => {
   expectExport(localStorage).toEqual(defaultState);
 });
 
-it('toggleComplete', async() => {
+it('toggleComplete', async () => {
   const todoId = 1;
   const todoItemId = 2;
-  todos.toggleComplete(todoId, todoItemId).then(res => {
-    const localStorage = todos.readStorage();
-    const todo = localStorage.list.find(i => i.id === todoId);
-    const completedTodo = todo.todoItems.find(i => i.id === todoItemId);
-    expect(completedTodo.completed).toEqual(true);
-  });
+  await todos.toggleComplete(todoId, todoItemId)
+  const todoList = todos.readStorage();
+  const todo = todoList.list.find(({id}) => id === todoId);
+  const completedTodo = todo.todoItems.find(i => i.id === todoItemId);
+  expect(completedTodo.completed).toEqual(true);
 });
 
+it('createTodoList', async () => {
+  const title = 'Test todo list';
+  await todos.createTodoList(title);
+  const todoList = todos.readStorage();
+  expect(todoList.list.length).toEqual(3)
+});
+
+it('createTodo', async () => {
+  const todoId = 2;
+  const text = 'New test todo';
+  await todos.createTodo(text, todoId);
+  const todoList = todos.readStorage();
+  const todo = todoList.list.find(({id}) => id === todoId);
+  expect(todo.todoItems.length).toEqual(5);
+});
+
+it('filter', () => {
+  const todoId = 1;
+  const criteria = (item) => item.completed;
+  const filteredCompleted = todos.filter(todoId)(criteria);
+  expect(filteredCompleted).toEqual([{
+    id: 2,
+    completed: true,
+    text: 'Add one todo'
+  }]);
+});

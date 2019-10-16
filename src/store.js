@@ -129,12 +129,12 @@ class TodosContainer extends Container {
     this.syncStorage();
   };
 
-  createTodoList = async text => {
+  createTodoList = async title => {
     const defaultState = JSON.parse(localStorage.getItem("appState"));
 
     const todoList = {
       id: defaultState.list.length + 1,
-      title: text,
+      title,
       todoItems: []
     };
     await this.setState(state => ({

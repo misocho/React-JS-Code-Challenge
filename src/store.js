@@ -5,10 +5,6 @@ const defaultState = {
     {
       id: 1,
       title: "First todo",
-      display: false,
-      filterCompleted: false,
-      filterAll: true,
-      filterActive: false,
       todoItems: [
         {
           id: 1,
@@ -40,7 +36,6 @@ const defaultState = {
     {
       id: 2,
       title: "Second todo",
-      display: false,
       todoItems: [
         {
           id: 6,
@@ -140,9 +135,6 @@ class TodosContainer extends Container {
     const todoList = {
       id: defaultState.list.length + 1,
       title: text,
-      display: false,
-      filterCompleted: false,
-      filterActive: false,
       todoItems: []
     };
     await this.setState(state => ({

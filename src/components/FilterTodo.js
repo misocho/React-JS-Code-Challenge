@@ -2,26 +2,15 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-const FilterTodo = ({ filterCompleted, isFilterActive, isFilterAll, isFilterCompleted, filterActive, filterAll, todo }) => {
-  const onFilterActive = e => {
-    filterActive(todo);
-  }
-
-  const onFilterCompleted = e => {
-    filterCompleted(todo);
-  }
-
-  const onFilterAll = e => {
-    filterAll(todo);
-  }
+const FilterTodo = ({ resolveAllItems, filterCriteria, filterActiveItems, filterCompletedItems }) => {
 
   return (
     <Filter>
       <FilterTitle>Filter by</FilterTitle>
       <FilterOptions>
-        <FilterOption onClick={onFilterAll}>[{isFilterAll ? 'x' : ' '}] <Text> All </Text></FilterOption>
-        <FilterOption onClick={onFilterCompleted}>[{ isFilterCompleted ? 'x' : ' ' }] <Text> Completed </Text></FilterOption>
-        <FilterOption onClick={onFilterActive}>[{isFilterActive ? 'x' : ' '}] <Text> Active </Text></FilterOption>
+        <FilterOption onClick={resolveAllItems}>[{filterCriteria === "all" && "x"}] <Text> All </Text></FilterOption>
+        <FilterOption onClick={filterCompletedItems}>[{filterCriteria === "completed" && "x"}] <Text> Completed </Text></FilterOption>
+        <FilterOption onClick={filterActiveItems}>[{filterCriteria === "active" && "x"}] <Text> Active </Text></FilterOption>
       </FilterOptions>
     </Filter>
   )

@@ -74,10 +74,11 @@ class TodosContainer extends Container {
       const state = window.localStorage.getItem("appState");
       if (state) {
         return JSON.parse(state);
-      }
+      } 
+      return defaultState;
+
     }
 
-    return defaultState;
   }
 
   syncStorage() {
@@ -111,7 +112,7 @@ class TodosContainer extends Container {
   };
 
   createTodo = async (text, todo) => {
-    const defaultState = this.readStorage();
+    const defaultState = this.readStorage()
     const getTodo = defaultState.list.find(({ id }) => id === todo);
     const item = {
       completed: false,
@@ -130,7 +131,7 @@ class TodosContainer extends Container {
   };
 
   createTodoList = async title => {
-    const defaultState = JSON.parse(localStorage.getItem("appState"));
+    const defaultState = this.readStorage();
 
     const todoList = {
       id: defaultState.list.length + 1,

@@ -1,8 +1,5 @@
 import TodosContainer from './store';
 
-import './setupTests';
-import expectExport from 'expect';
-
 const defaultState = {
   list: [
     {
@@ -69,7 +66,7 @@ const todos = new TodosContainer();
 
 it('readStorage', () => {
   const localStorage = todos.readStorage();
-  expectExport(localStorage).toEqual(defaultState);
+  expect(localStorage).toEqual(defaultState);
 });
 
 it('toggleComplete', async () => {

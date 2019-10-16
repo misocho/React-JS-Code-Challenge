@@ -38,22 +38,22 @@ const defaultState = {
       title: "Second todo",
       todoItems: [
         {
-          id: 6,
+          id: 1,
           completed: false,
           text: "Create github repo"
         },
         {
-          id: 7,
+          id: 2,
           completed: false,
           text: "Go though source code"
         },
         {
-          id: 8,
+          id: 3,
           completed: false,
           text: "Add list todos"
         },
         {
-          id: 9,
+          id: 4,
           completed: false,
           text: "Add filter todos"
         }

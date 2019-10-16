@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styled from 'styled-components';
 
 import Todo from './Todo';
 
-const ListTodos = ({ items, displayTodos, todoMethods }) => (
-  <Wrapper >
-    {items.map(item => {
-      const onDisplay = e => {
-        displayTodos(item.id);
-      }
-      
-      return (
-        <TodosWrapper key={item.id}>
-          <TodoHeader onClick={onDisplay}>
-            <Title>{item.title}</Title>
-            <CloseButton  display={item.display.toString()}>+</CloseButton>
-          </TodoHeader>
-          {item.display ? <Todo {...item} title={item.title} todo={item.id} items={item.todoItems} todoMethods={todoMethods} /> : ''}
-        </TodosWrapper>)
-    })}
-  </Wrapper>
-)
+const ListTodos = ({ items, todoMethods }) => {
+  return (
+    <Wrapper >
+      {items.map(item => <ListTodoContainer {...{ item, todoMethods }} key={item.id}/>)}
+    </Wrapper>
+  )
+}
+
+
+const ListTodoContainer = ({item, todoMethods}) => {
+  const [displayList, setDisplayList] = useState(false)
+  const onDisplay = e => {
+    setDisplayList(display => !display)
+  }
+
+  return (
+    <TodosWrapper>
+      <TodoHeader onClick={onDisplay}>
+        <Title>{item.title}</Title>
+        <CloseButton display={displayList.toString()}>+</CloseButton>
+      </TodoHeader>
+      {displayList && <Todo {...item} title={item.title} todo={item.id} filter={todoMethods.filter(item.id)} items={item.todoItems} todoMethods={todoMethods} />}
+    </TodosWrapper>)
+}
 
 const Wrapper = styled.div`
   display: flex;

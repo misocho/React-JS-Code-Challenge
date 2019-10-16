@@ -92,22 +92,6 @@ class TodosContainer extends Container {
     }
   }
 
-  displayTodos = async id => {
-    const todo = this.state.list.find(i => i.id === id);
-    const display = !todo.display;
-    await this.setState(state => {
-      const list = state.list.map(todo => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          display
-        };
-      });
-
-      return { list };
-    });
-    this.syncStorage();
-  };
 
   listTodos() {
     return this.state.list;
@@ -167,108 +151,11 @@ class TodosContainer extends Container {
     this.syncStorage();
   };
 
-  filterAll = async id => {
-    const defaultState = JSON.parse(localStorage.getItem("appState"));
-    const defaultTodo = defaultState.list.find(i => i.id === id);
-    const currentTodo = this.state.list.find(i => i.id === id);
-    const filterAll = !currentTodo.filterAll;
-
-    if (currentTodo.filterCompleted) {
-      currentTodo.filterCompleted = false;
-    }
-    if (currentTodo.filterActive) {
-      currentTodo.filterActive = false;
-    }
-    await this.setState(state => {
-      const list = state.list.map(todo => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          filterAll
-        };
-      });
-      return { list };
-    });
-
-    const todos = defaultTodo.todoItems;
-    this.updateStateByFilter(id, { todos });
-  };
-
-  filterActive = async id => {
-    const defaultState = JSON.parse(localStorage.getItem("appState"));
-    const defaultTodo = defaultState.list.find(i => i.id === id);
-    const currentTodo = this.state.list.find(i => i.id === id);
-    const filterActive = !currentTodo.filterActive;
-    if (currentTodo.filterCompleted) {
-      currentTodo.filterCompleted = false;
-    }
-    if (currentTodo.filterAll) {
-      currentTodo.filterAll = false;
-    }
-    await this.setState(state => {
-      const list = state.list.map(todo => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          filterActive
-        };
-      });
-      return { list };
-    });
-
-    const todos = filterActive
-      ? defaultTodo.todoItems.filter(i => i.completed === false)
-      : defaultTodo.todoItems;
-    console.log(defaultTodo);
-    this.updateStateByFilter(id, { todos });
-  };
-
   filter = todoId => criteria => {
     const { list } = this.readStorage()
     const { todoItems } = list.find(({ id }) => id === todoId)
     return todoItems.filter(criteria)
   }
-
-  filterCompleted = async id => {
-    const defaultState = JSON.parse(localStorage.getItem("appState"));
-    const defaultTodo = defaultState.list.find(i => i.id === id);
-    const currentTodo = this.state.list.find(i => i.id === id);
-    const filterCompleted = !currentTodo.filterCompleted;
-    if (currentTodo.filterActive) {
-      currentTodo.filterActive = false;
-    }
-    if (currentTodo.filterAll) {
-      currentTodo.filterAll = false;
-    }
-    await this.setState(state => {
-      const list = state.list.map(todo => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          filterCompleted
-        };
-      });
-      return { list };
-    });
-
-    const todos = filterCompleted
-      ? defaultTodo.todoItems.filter(i => i.completed === true)
-      : defaultTodo.todoItems;
-    this.updateStateByFilter(id, { todos });
-  };
-
-  updateStateByFilter = async (id, { todos }) => {
-    await this.setState(state => {
-      const list = state.list.map(listItem => {
-        if (listItem.id !== id) return { ...listItem };
-        return {
-          ...listItem,
-          todoItems: todos
-        };
-      });
-      return { list };
-    });
-  };
 }
 
 export default TodosContainer;
